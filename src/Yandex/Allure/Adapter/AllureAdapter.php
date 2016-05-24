@@ -66,6 +66,7 @@ class AllureAdapter extends Extension
         'expectedExceptionCode', 'expectedExceptionMessage', 'group', 'large', 'medium',
         'preserveGlobalState', 'requires', 'runTestsInSeparateProcesses', 'runInSeparateProcess',
         'small', 'test', 'testdox', 'ticket', 'uses',
+        'group', 'env', 'skip', 'incomplete', 'ignore'
     ];
 
     /**
@@ -198,8 +199,9 @@ class AllureAdapter extends Extension
     {
         $test = $testEvent->getTest();
         $testName = $test->getName();
-        $className = get_class($test);
+        $className = get_class($test->getTestClass());
         $event = new TestCaseStartedEvent($this->uuid, $testName);
+
         if (method_exists($className, $testName)){
             $annotationManager = new Annotation\AnnotationManager(Annotation\AnnotationProvider::getMethodAnnotations($className, $testName));
             $annotationManager->updateTestCaseEvent($event);
