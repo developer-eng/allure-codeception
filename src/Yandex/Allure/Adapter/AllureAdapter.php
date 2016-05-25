@@ -199,7 +199,12 @@ class AllureAdapter extends Extension
     {
         $test = $testEvent->getTest();
         $testName = $test->getName();
-        $className = get_class($test->getTestClass());
+        if(method_exists($test, 'getTestClass')) {
+            $className = get_class($test->getTestClass());
+        } else {
+            $className = get_class($test);
+        }
+
         $event = new TestCaseStartedEvent($this->uuid, $testName);
 
         if (method_exists($className, $testName)){
